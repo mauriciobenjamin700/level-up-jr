@@ -13,3 +13,4 @@
 ## Fluxo de Estudos
 
 - Dia 1: 50:56
+- Dia 2: 01:02:00
