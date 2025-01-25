@@ -1,12 +1,13 @@
 services:
-  postgres:
-    image: postgres:17.2
-    container_name: postgres
+  mysql:
+    image: mysql:8.0.30-debian
+    container_name: mysql
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: tickets
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tickets
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
     volumes:
       - ./db.sql:/docker-entrypoint-initdb.d/db.sql
     ports:
-      - "33060:5432"
+      - "33060:3306"

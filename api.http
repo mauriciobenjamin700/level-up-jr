@@ -11,12 +11,12 @@ Content-Type: application/json
 
 {
     "name": "Partner 1",
-    "email": "partner1@user.com",
+    "email": "partner1@partner.com",
     "password": "test",
     "company_name": "Company Name 1"
 }
 ###
-POST http://localhost:3000/curtomers
+POST http://localhost:3000/customers
 Content-Type: application/json
 
 {

@@ -9,8 +9,12 @@
 - `npm i --save-dev @types/express`
 - `npx nodemon`
 - `npm install ts-node --save-dev`
+- `npm install mysql2`
+- `npm install bcrypt`
+- `npm install --save-dev @types/bcrypt`
 
 ## Fluxo de Estudos
 
 - Dia 1: 50:56
 - Dia 2: 01:02:00
+- Dia 3: 01:22:12
