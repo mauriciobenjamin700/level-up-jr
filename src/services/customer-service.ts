@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import * as mysql from "mysql2/promise";
 import jwt from "jsonwebtoken";
 import createConnection from "../model/database";
+import { UserModel } from "../model/user-model";
 
 export class CustomerService{
 
@@ -20,13 +21,14 @@ export class CustomerService{
             const createdAt = new Date();
     
             const hasedPassword = bcrypt.hashSync(password, 10);
+
+            const userModel = await UserModel.create({
+                name, 
+                email, 
+                password:hasedPassword
+            });
     
-            const [userResult] = await conection.execute<mysql.ResultSetHeader>(
-                "INSERT INTO users (name, email, password, created_at) VALUES (?, ?, ?, ?)", 
-                [name, email, hasedPassword, createdAt]
-            );
-    
-            const userId = userResult.insertId;
+            const userId = userModel.id;
     
             const [partnerResult] = await conection.execute<mysql.ResultSetHeader>(
                 "INSERT INTO customers (user_id, address, phone, created_at) VALUES (?, ?, ?, ?)", 

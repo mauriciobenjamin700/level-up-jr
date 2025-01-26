@@ -7,6 +7,7 @@ import { authRoutes } from "./controller/auth-controller";
 import { customersRoutes } from "./controller/customer-controller";
 import { partnersRoutes } from "./controller/partner-controller";
 import { eventsRoutes } from "./controller/event-controller";
+import { UserService } from "./services/user-service";
 
 
 
@@ -38,35 +39,23 @@ app.use(async (req: Request, res: Response, next: NextFunction): Promise<any> =>
         return res.status(401).json({message: "No token provided"});
     }
 
-    try{
-        const payload = jwt.verify(token, "your_secret_key") as {
-            id: number,
-            email: string
-        };
+    const payload = jwt.verify(token, "your_secret_key") as {
+        id: number,
+        email: string
+    };
 
-        const conection =  await createConnection();
+    const userService = new UserService();
 
-        const [rows] = await conection.execute<mysql.RowDataPacket[]>(
-            "SELECT * FROM users WHERE id = ?", 
-            [payload.id]
-        )
+    const user = await userService.findById(payload.id);
 
-        const user = rows.length ? rows[0] : null;
-
-        if (!user){
-            return res.status(401).json({message: "Invalid token"});
-            
-        }
-
-        req.user = user as {id: number, email: string};
-
-        await conection.end();
-
-        return next();
-
-    } catch (error){
+    if (!user){
         return res.status(401).json({message: "Invalid token"});
+        
     }
+
+    req.user = user as {id: number, email: string};
+
+    return next();
 
     
 })

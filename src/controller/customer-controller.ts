@@ -1,7 +1,4 @@
 import { Router } from "express";
-import * as mysql from "mysql2/promise";
-import bcrypt from "bcrypt";
-import createConnection from "../model/database";
 import { CustomerService } from "../services/customer-service";
 
 

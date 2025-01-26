@@ -1,52 +1,65 @@
 import {Router} from "express";
 import * as mysql from "mysql2/promise";
 import createConnection from "../model/database";
+import { EventService } from "../services/event-service";
 
 
 export const eventsRoutes = Router();
 
-eventsRoutes.post("", (req, res) => {
-    const { name, email, password, company_name, address, phone } = req.body;
-    console.log(name, email, password, address, phone);
-    res.json({message: "Partner created"});
-});
+eventsRoutes.post("/", async (req, res):Promise <any> => {
+    const { name, description, date, location } = req.body;
+    
+    const eventService = new EventService();
 
-eventsRoutes.get("", async (req, res) => {
+    const connection = await createConnection();
 
-
-    const conection = await createConnection();
     try{
+        
 
-        const [eventRows] = await conection.execute<mysql.RowDataPacket[]>(
-            "SELECT * FROM events"
+        const [rows] = await connection.execute<mysql.RowDataPacket[]>(
+            "SELECT * FROM partners WHERE user_id = ?", 
+            [req.user!.id]
         )
 
+        const partner = rows.length ? rows[0] : null;
 
-        res.status(200).json(eventRows);
+        if (!partner){
+            return res.status(403).json({message: "Not authorized"});
+        }
+
+        const result = await eventService.create({
+            name,
+            description,
+            date,
+            location,
+            partnerId: partner.id
+        });
+
+        res.status(201).json(result);
+
     } finally{
-        await conection.end();
+        await connection.end();
     }
+
+});
+
+eventsRoutes.get("/", async (req, res) => {
+
+    const eventService = new EventService();
+
+    const events = await eventService.findAll();
+
+    res.status(200).json(events);
 
 });
 
 eventsRoutes.get("/:id", async (req, res): Promise<any> => {
     const { id } = req.params;
-    const conection = await createConnection();
-    try{
+    
+    const eventService = new EventService();
 
-        const [eventRows] = await conection.execute<mysql.RowDataPacket[]>(
-            "SELECT * FROM events WHERE id = ?",
-            [id]
-        )
+    const event = await eventService.findById(Number(id));
 
-        const event = eventRows.length ? eventRows[0] : null;
+    res.status(200).json(event);
 
-        if (!event){
-            return res.status(404).json({message: "Event not found"});
-        }
-
-        res.status(200).json(eventRows);
-    } finally{
-        await conection.end();
-    }
 });
