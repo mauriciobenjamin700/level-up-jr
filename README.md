@@ -17,6 +17,7 @@
 
 ## Fluxo de Estudos
 
-- Dia 1: 50:56
+- Dia 1: Aula 1 -> 50:56
 - Dia 2: 01:02:00
 - Dia 3: 01:22:12
+- Dia 4: Termei a Aula 1 -> Aula 2- > 36:35

@@ -61,7 +61,7 @@ Content-Type: application/json
 ### Criação do evento pelo parceiro
 POST http://localhost:3000/partners/events
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1NTMxOCwiZXhwIjoxNzM3ODU4OTE4fQ.rKQisDLc_OL0PP59xOVbvF1KUQ2lTSqYRu4m3FZV1ak
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1Njk4NCwiZXhwIjoxNzM3ODYwNTg0fQ.oAVB0z0vywUwJ0aHWFNSbaW_Bextb_vBvpTkr-w5iPI
 
 {
     "name": "Event 1",
@@ -72,12 +72,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 }
 ### Busca de eventos pelo parceiro
 GET http://localhost:3000/partners/events
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1NDY2NCwiZXhwIjoxNzM3ODU4MjY0fQ.7LnnCtrjNy7Qjzw6-O0nEPz4GpbOU6SLxMR-j7BOytQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1Njk4NCwiZXhwIjoxNzM3ODYwNTg0fQ.oAVB0z0vywUwJ0aHWFNSbaW_Bextb_vBvpTkr-w5iPI
 ### Busca de evento pelo parceiro
 GET http://localhost:3000/partners/events/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1Njk4NCwiZXhwIjoxNzM3ODYwNTg0fQ.oAVB0z0vywUwJ0aHWFNSbaW_Bextb_vBvpTkr-w5iPI
 
 ### Listagem de eventos
-GET http://localhost:3000/events
+GET http://localhost:3000/events/
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1Njk4NCwiZXhwIjoxNzM3ODYwNTg0fQ.oAVB0z0vywUwJ0aHWFNSbaW_Bextb_vBvpTkr-w5iPI
 ### Busca de um evento
 GET http://localhost:3000/events/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1NTMxOCwiZXhwIjoxNzM3ODU4OTE4fQ.rKQisDLc_OL0PP59xOVbvF1KUQ2lTSqYRu4m3FZV1ak
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1Njk4NCwiZXhwIjoxNzM3ODYwNTg0fQ.oAVB0z0vywUwJ0aHWFNSbaW_Bextb_vBvpTkr-w5iPI
