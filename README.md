@@ -12,6 +12,8 @@
 - `npm install mysql2`
 - `npm install bcrypt`
 - `npm install --save-dev @types/bcrypt`
+- `npm install jsonwebtoken`
+- `npm install --save-dev @types/jsonwebtoken`
 
 ## Fluxo de Estudos
 

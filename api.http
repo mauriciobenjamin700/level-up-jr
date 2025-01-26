@@ -1,12 +1,33 @@
+###
+# @name loginPartner1
+
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "partner1@user.com",
-    "password": "secret"
+    "email": "partner1@partner.com",
+    "password": "test"
 }
+
 ###
-POST http://localhost:3000/partners
+@tokenPartner1 = {{loginPartner1.response.body.token}
+
+###
+# @name loginCustomer1
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "client@user.com",
+    "password": "client"
+}
+
+###
+@tokenCustomer1 = {{loginCustomer1.response.body.token}
+
+###
+POST http://localhost:3000/partners/register
 Content-Type: application/json
 
 {
@@ -16,7 +37,7 @@ Content-Type: application/json
     "company_name": "Company Name 1"
 }
 ###
-POST http://localhost:3000/customers
+POST http://localhost:3000/customers/register
 Content-Type: application/json
 
 {
@@ -40,6 +61,7 @@ Content-Type: application/json
 ### Criação do evento pelo parceiro
 POST http://localhost:3000/partners/events
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1NTMxOCwiZXhwIjoxNzM3ODU4OTE4fQ.rKQisDLc_OL0PP59xOVbvF1KUQ2lTSqYRu4m3FZV1ak
 
 {
     "name": "Event 1",
@@ -50,10 +72,12 @@ Content-Type: application/json
 }
 ### Busca de eventos pelo parceiro
 GET http://localhost:3000/partners/events
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1NDY2NCwiZXhwIjoxNzM3ODU4MjY0fQ.7LnnCtrjNy7Qjzw6-O0nEPz4GpbOU6SLxMR-j7BOytQ
 ### Busca de evento pelo parceiro
 GET http://localhost:3000/partners/events/1
 
 ### Listagem de eventos
 GET http://localhost:3000/events
 ### Busca de um evento
-GET http://localhost:3000/events/12
+GET http://localhost:3000/events/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyMUBwYXJ0bmVyLmNvbSIsImlhdCI6MTczNzg1NTMxOCwiZXhwIjoxNzM3ODU4OTE4fQ.rKQisDLc_OL0PP59xOVbvF1KUQ2lTSqYRu4m3FZV1ak
