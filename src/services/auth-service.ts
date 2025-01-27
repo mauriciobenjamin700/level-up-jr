@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import createConnection from "../model/database";
 import jwt from 'jsonwebtoken';
 import { UserModel } from '../model/user-model';
 

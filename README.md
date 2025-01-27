@@ -21,4 +21,4 @@
 - Dia 2: 01:02:00
 - Dia 3: 01:22:12
 - Dia 4: Termei a Aula 1 -> Aula 2- > 36:35
-- Dia 5: Aula 2 -> 01:20:42
+- Dia 5: Aula 2 -> 01:41:07

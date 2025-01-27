@@ -1,5 +1,5 @@
 import * as mysql from "mysql2/promise";
-import createConnection from "../model/database";
+import { Database } from "../model/database";
 
 export class EventService{
 
@@ -15,8 +15,7 @@ export class EventService{
 
         const { name, description, date, location, partnerId } = data;
     
-        const conection = await createConnection();
-        try{
+        const conection = Database.getInstance();
             const eventDate = new Date(date);
     
             const createdAt = new Date();
@@ -36,49 +35,38 @@ export class EventService{
                     created_at: createdAt,
                 }
 
-        } finally{
-            await conection.end();
-        }
     }
 
     async findAll(partnerId?: number){
 
-        const conection = await createConnection();
-        try{
-            const query = partnerId 
-                ? "SELECT * FROM events WHERE partner_id = ?" 
-                : "SELECT * FROM events";
-            const params = partnerId 
-                ? [partnerId] 
-                : [];
+        const conection = Database.getInstance();
+        const query = partnerId 
+            ? "SELECT * FROM events WHERE partner_id = ?" 
+            : "SELECT * FROM events";
+        const params = partnerId 
+            ? [partnerId] 
+            : [];
 
-            const [eventRows] = await conection.execute<mysql.RowDataPacket[]>(
-                query, 
-                params
-            )
-    
-            return eventRows;
-            
-        } finally{
-            await conection.end();
-        }
+        const [eventRows] = await conection.execute<mysql.RowDataPacket[]>(
+            query, 
+            params
+        )
+
+        return eventRows;
+
     }
 
     async findById(eventId: number){
-        const conection = await createConnection();
-        try{
-            const [eventRows] = await conection.execute<mysql.RowDataPacket[]>(
-                "SELECT * FROM events WHERE id = ?", 
-                [eventId]
-            )
-            
-            const event = eventRows.length > 0 ? eventRows[0] : null;
+        const conection = Database.getInstance();
 
-            return event;
-            
-        }finally{
-            await conection.end()
-        }
+        const [eventRows] = await conection.execute<mysql.RowDataPacket[]>(
+            "SELECT * FROM events WHERE id = ?", 
+            [eventId]
+        );
+        
+        const event = eventRows.length > 0 ? eventRows[0] : null;
+
+        return event;
+
     }
-
 }

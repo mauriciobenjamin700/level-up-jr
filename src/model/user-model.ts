@@ -1,5 +1,6 @@
+import bcrypt from "bcrypt";
 import * as mysql from "mysql2/promise";
-import createConnection from "./database";
+import { Database } from "./database";
 
 
 export class UserModel{
@@ -19,75 +20,104 @@ export class UserModel{
         email: string,
         password: string
     }): Promise<UserModel>  {
+
+        data.password = UserModel.hashPassword(data.password);
         const { name, email, password } = data;
-        const conection = await createConnection();
-        try{
-            const createdAt = new Date();
+        const conection = Database.getInstance();
+
+        const createdAt = new Date();
+
+        const [userResult] = await conection.execute<mysql.ResultSetHeader>(
+            "INSERT INTO users (name, email, password, created_at) VALUES (?, ?, ?, ?)", 
+            [name, email, password, createdAt]
+        );
+
+        return new UserModel({
+            ...data,
+            created_at: createdAt,
+            id: userResult.insertId
+        })
     
-            const [userResult] = await conection.execute<mysql.ResultSetHeader>(
-                "INSERT INTO users (name, email, password, created_at) VALUES (?, ?, ?, ?)", 
-                [name, email, password, createdAt]
-            );
-    
-            return new UserModel({
-                ...data,
-                created_at: createdAt,
-                id: userResult.insertId
-            })
-    
-            
-        } finally{
-            await conection.end();
-        }
     }
 
     read(){
 
     }
 
-    update(){
+    async update(){
+        const connection = Database.getInstance();
 
+        const [result] = await connection.execute<mysql.ResultSetHeader>(
+            "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?", 
+            [this.name, this.email, this.password, this.id]
+        );
+
+        if (result.affectedRows === 0){
+            throw new Error("User not found");
+        };
     }
 
     delete(){
 
     }
 
-    static async findById(){
+    static async findById(id: string){
+        const connection = Database.getInstance();
 
+        const [rows] = await connection.execute<mysql.RowDataPacket[]>(
+            "SELECT * FROM users WHERE id = ?", 
+            [id]
+        );
+
+        const user = rows.length ? rows[0] : null;
+
+        if (!user) return null;
+
+        return new UserModel({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            created_at: user.created_at
+        })
     }
 
     static async findByEmail(email: string): Promise<UserModel>{
 
-        const conection =  await createConnection();
+        const conection =  Database.getInstance();
 
-        try{
-            const [rows] = await conection.execute<mysql.RowDataPacket[]>(
-                "SELECT * FROM users WHERE email =?", 
-                [email]
-            )
-        
-            const user = rows.length ? rows[0] : null;
+        const [rows] = await conection.execute<mysql.RowDataPacket[]>(
+            "SELECT * FROM users WHERE email =?", 
+            [email]
+        )
+    
+        const user = rows.length ? rows[0] : null;
 
-            if (!user) return null;
+        if (!user) return null;
 
-            return new UserModel({
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                password: user.password,
-                created_at: user.created_at
-            })
-
-        }finally{
-            await conection.end();
-        }
-
-        
+        return new UserModel({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            created_at: user.created_at
+        })   
     }
 
     static async findAll(){
+        const connection = Database.getInstance();
 
+        const [rows] = await connection.execute<mysql.RowDataPacket[]>(
+            "SELECT * FROM users"
+        );
+
+        return rows.map(user => new UserModel({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            created_at: user.created_at
+        }))
     }
 
     fill(data: Partial<UserModel>): void{
@@ -96,6 +126,14 @@ export class UserModel{
         if (data.email !== undefined) this.email = data.email;
         if (data.password !== undefined) this.password = data.password;
         if (data.created_at !== undefined) this.created_at = data.created_at;
+    }
+
+    static hashPassword(password: string): string{
+        return bcrypt.hashSync(password, 10);
+    }
+
+    static comparePassword(password: string, hash: string): boolean {
+        return bcrypt.compareSync(password, hash);
     }
 
 }
